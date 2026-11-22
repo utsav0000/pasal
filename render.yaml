@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: pasal
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: node --disable-warning=ExperimentalWarning server/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: COOKIE_SECURE
+        value: true
+      - key: ENABLE_DEV_TOOLS
+        value: false
