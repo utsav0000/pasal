@@ -1,0 +1,8 @@
+node_modules/
+data/
+public/uploads/
+public/build/
+public/seed/
+.env
+*.log
+scripts/tmp/

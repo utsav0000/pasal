@@ -1,0 +1,13 @@
+services:
+  pasal:
+    build: .
+    ports: ["3000:3000"]
+    env_file: .env
+    environment:
+      DATABASE_PATH: /data/pasal.db
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - pasal-data:/data
+    restart: unless-stopped
+volumes:
+  pasal-data:

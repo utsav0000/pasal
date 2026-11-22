@@ -1,0 +1,28 @@
+{
+  "name": "PASAL",
+  "tagline": "Everything Finds a Buyer.",
+  "title": "PASAL | Everything Finds a Buyer.",
+  "description": "Discover great deals, sell what you don't need, and find everything you love — all in one place. PASAL is the marketplace for India and Nepal.",
+  "supportEmail": "support@pasal.example",
+  "colors": {
+    "accent": "#6A4DFF",
+    "accent2": "#2F7BFF",
+    "accentInk": "#FFFFFF",
+    "midnight": "#0A0F24",
+    "success": "#12B76A",
+    "warning": "#F5A524",
+    "danger": "#F04438"
+  },
+  "logo": {
+    "primaryLight": "/brand/pasal-logo-light.svg",
+    "primaryDark": "/brand/pasal-logo-dark.svg",
+    "secondary": "/brand/pasal-logo-stacked.svg",
+    "icon": "/brand/pasal-icon.svg",
+    "favicon": "/brand/favicon.svg",
+    "og": "/brand/og-image.png"
+  },
+  "social": {
+    "twitter": "@pasal",
+    "instagram": "pasal"
+  }
+}
