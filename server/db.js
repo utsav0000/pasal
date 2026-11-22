@@ -5,6 +5,16 @@ import { config, ROOT } from './config.js';
 
 let db;
 const cache = new Map();
+export let hasFts = false;
+
+function checkFts5(database) {
+  try {
+    database.exec('CREATE VIRTUAL TABLE IF NOT EXISTS _test_fts5 USING fts5(x); DROP TABLE IF EXISTS _test_fts5;');
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export function openDb(file = config.dbPath) {
   if (db) closeDb();
@@ -12,6 +22,7 @@ export function openDb(file = config.dbPath) {
   db = new DatabaseSync(file);
   db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000; PRAGMA synchronous = NORMAL;');
   cache.clear();
+  hasFts = checkFts5(db);
   migrate();
   return db;
 }
@@ -37,7 +48,14 @@ function migrate() {
     if (done.has(f)) continue;
     db.exec('BEGIN');
     try {
-      db.exec(fs.readFileSync(path.join(dir, f), 'utf8'));
+      let sql = fs.readFileSync(path.join(dir, f), 'utf8');
+      if (!hasFts) {
+        sql = sql.replace(
+          /CREATE\s+VIRTUAL\s+TABLE\s+listings_fts\s+USING\s+fts5\s*\([^;]+\);/i,
+          'CREATE TABLE IF NOT EXISTS listings_fts (rowid INTEGER PRIMARY KEY, title TEXT, description TEXT, brand TEXT, model TEXT, category TEXT, city TEXT);'
+        );
+      }
+      db.exec(sql);
       db.prepare('INSERT INTO schema_migrations (name) VALUES (?)').run(f);
       db.exec('COMMIT');
     } catch (e) {

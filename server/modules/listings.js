@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { z } from 'zod';
-import { q, tx, json } from '../db.js';
+import { q, tx, json, hasFts } from '../db.js';
 import { config } from '../config.js';
 import { bad, notFound, forbidden, conflict, validate, zId, rateLimit } from '../lib/http.js';
 import { cleanText, sha256 } from '../lib/security.js';
@@ -198,13 +198,13 @@ export function searchListings(raw, viewer, { log = false } = {}) {
     let j = join;
     let rank = rankExpr;
     if (text) {
-      const fq = ftsQuery(text);
+      const fq = hasFts ? ftsQuery(text) : null;
       if (fq) {
         j += ' JOIN listings_fts f ON f.rowid = l.id';
         w.push('listings_fts MATCH ?'); a.push(fq);
         rank = 'bm25(listings_fts, 10.0, 1.0, 6.0, 4.0, 3.0, 2.0)';
       } else {
-        w.push('(l.title LIKE ? OR l.brand LIKE ?)'); a.push(`%${text}%`, `%${text}%`);
+        w.push('(l.title LIKE ? OR l.brand LIKE ? OR l.description LIKE ?)'); a.push(`%${text}%`, `%${text}%`, `%${text}%`);
       }
     }
     const rINR = getRate('INR', display) || 1e6;
