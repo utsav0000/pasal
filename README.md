@@ -8,6 +8,8 @@ This repository is a complete, runnable application: frontend, API, database, re
 
 ## Quick start
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/utsav0000/pasal)
+
 Requires **Node.js 22.5+** (uses the built-in `node:sqlite`). No database server needed.
 
 ```bash
