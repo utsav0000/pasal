@@ -3,9 +3,12 @@ services:
     name: pasal
     runtime: node
     plan: free
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --include=dev && npm run build
     startCommand: node --disable-warning=ExperimentalWarning server/index.js
+    healthCheckPath: /api/v1/health
     envVars:
+      - key: NODE_VERSION
+        value: 22.14.0
       - key: NODE_ENV
         value: production
       - key: COOKIE_SECURE
